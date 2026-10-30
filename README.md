@@ -14,6 +14,22 @@ Build your nation. Command your armies. Expand your territory. Conquer the world
 
 ---
 
+## 🎮 Play Global Conquest
+
+Ready to build your empire?
+
+You don't need to clone the repository or install anything. Play Global Conquest directly in your browser!
+
+<p align="center">
+  <a href="https://global-conquest.ai.studio/">
+    <img src="https://img.shields.io/badge/PLAY%20NOW-GLOBAL%20CONQUEST-8B5CF6?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Play Global Conquest">
+  </a>
+</p>
+
+**Game Link:** https://global-conquest.ai.studio/
+
+---
+
 ## ⚔️ About the Project
 
 **Global Conquest** is a browser-based real-time strategy game inspired by territorial warfare and nation-building games such as [OpenFront](https://openfront.io/).
@@ -27,8 +43,6 @@ Your ultimate objective?
 Every decision matters. Every territory is an opportunity. Every rival nation is a potential threat.
 
 ## ✨ Core Features
-
-The following features define the planned gameplay experience:
 
 | Feature | Description |
 |:--|:--|
@@ -191,7 +205,7 @@ The goal is to create a strategy game that is easy to understand but challenging
 
 ### 👑 Project Creator
 
-**PeroX-Coder**
+**Reko Re**
 
 - Original project concept and direction.
 - Product vision and gameplay planning.
@@ -212,8 +226,18 @@ Angular · TypeScript · HTML5 · CSS
 
 ---
 
-### 🌍 One World. Countless Nations. One Conqueror.
+## 📜 License
 
-*Built with strategy. Driven by ambition.*
+License information will be added when the project's license is finalized.
 
-⭐ If you find this project interesting, consider giving it a star!
+---
+
+<p align="center">
+  <b>🌍 ONE WORLD. COUNTLESS NATIONS. ONE CONQUEROR.</b>
+  <br><br>
+  <i>Built with strategy. Driven by ambition.</i>
+  <br><br>
+  ⭐ If you find this project interesting, consider giving it a star!
+  <br><br>
+  <a href="https://global-conquest.ai.studio/">PLAY GLOBAL CONQUEST</a>
+</p>
