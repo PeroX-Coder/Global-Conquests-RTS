@@ -110,7 +110,7 @@ The roadmap tracks the project's planned development. Features should only be ma
 - [ ] Save and load system
 
 ### Performance & Polish
-- [x] Simulation performance optimization
+- [ ] Simulation performance optimization
 - [ ] Responsive interface
 - [ ] Improved AI decision-making
 - [ ] Gameplay balancing
@@ -176,8 +176,8 @@ Visit the local URL displayed in your terminal. The default Angular development 
 ```text
 http://localhost:4200
 ```
-**Or,
-## Play in web- 
+## Or,
+### Play in web- 
 
 ## 🎨 Project Philosophy
 
