@@ -176,6 +176,8 @@ Visit the local URL displayed in your terminal. The default Angular development 
 ```text
 http://localhost:4200
 ```
+**Or,
+## Play in web- 
 
 ## 🎨 Project Philosophy
 
@@ -191,7 +193,7 @@ The goal is to create a strategy game that is easy to understand but challenging
 
 ### 👑 Project Creator
 
-**Reko Re**
+**PeroX-Coder**
 
 - Original project concept and direction.
 - Product vision and gameplay planning.
@@ -209,12 +211,6 @@ Special appreciation to the OpenFront project and its contributors for inspiring
 ### 🛠️ Built With
 
 Angular · TypeScript · HTML5 · CSS
-
----
-
-## 📜 License
-
-License information will be added when the project's license is finalized.
 
 ---
 
