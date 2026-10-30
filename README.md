@@ -1,100 +1,97 @@
 # 🌍 GLOBAL CONQUEST
 
-### *Expand. Conquer. Dominate.*
+### Expand. Conquer. Dominate.
 
-\<p align="center">
-&#x20; \<img src="[https://img.shields.io/badge/STATUS-IN%20DEVELOPMENT-8B5CF6?style=for-the-badge&labelColor=0D1117](https://img.shields.io/badge/STATUS-IN%20DEVELOPMENT-8B5CF6?style=for-the-badge\&labelColor=0D1117)" />
-&#x20; \<img src="[https://img.shields.io/badge/GENRE-REAL%20TIME%20STRATEGY-2563EB?style=for-the-badge&labelColor=0D1117](https://img.shields.io/badge/GENRE-REAL%20TIME%20STRATEGY-2563EB?style=for-the-badge\&labelColor=0D1117)" />
-&#x20; \<img src="[https://img.shields.io/badge/PLATFORM-WEB-16A34A?style=for-the-badge&labelColor=0D1117](https://img.shields.io/badge/PLATFORM-WEB-16A34A?style=for-the-badge\&labelColor=0D1117)" />
-\</p>
+![Development Status](https://img.shields.io/badge/STATUS-IN%20DEVELOPMENT-8B5CF6?style=for-the-badge&labelColor=0D1117)
+![Genre](https://img.shields.io/badge/GENRE-REAL%20TIME%20STRATEGY-2563EB?style=for-the-badge&labelColor=0D1117)
+![Platform](https://img.shields.io/badge/PLATFORM-WEB-16A34A?style=for-the-badge&labelColor=0D1117)
+![Framework](https://img.shields.io/badge/FRAMEWORK-ANGULAR-DD0031?style=for-the-badge&labelColor=0D1117)
+![Language](https://img.shields.io/badge/LANGUAGE-TYPESCRIPT-3178C6?style=for-the-badge&labelColor=0D1117)
 
-\<p align="center">
-&#x20; \<b>A real-time territorial conquest strategy game where every border tells a story.\</b>
-&#x20; \<br/>
-&#x20; Build your nation, command your armies, expand your territory, and conquer the world.
-\</p>
+**A real-time territorial conquest strategy game where every border tells a story.**
+
+Build your nation. Command your armies. Expand your territory. Conquer the world.
 
 ---
 
-## ⚔️ About The Project
+## ⚔️ About the Project
 
-**Global Conquest** is a browser-based real-time strategy game inspired by territorial warfare and nation-building games like OpenFront.
+**Global Conquest** is a browser-based real-time strategy game inspired by territorial warfare and nation-building games such as [OpenFront](https://openfront.io/).
 
-Enter a massive interactive world populated by AI-controlled nations. Start with a small territory, develop your economy, build military infrastructure, generate troops, and expand your borders through strategic warfare.
+Enter an expansive world populated by AI-controlled nations. Begin with a small territory, develop your economy, build military infrastructure, generate troops, and expand your borders through strategic warfare.
 
-Your objective?
+Your ultimate objective?
 
-**Dominate the entire world.**
+**Achieve global domination.**
 
-Whether you're expanding peacefully into neutral territories or launching an all-out military campaign against rival nations, every decision shapes your path to global domination.
+Every decision matters. Every territory is an opportunity. Every rival nation is a potential threat.
 
-## ✨ Key Features
+## ✨ Core Features
 
-| Feature                  | Description                                                    |
-| :----------------------- | :------------------------------------------------------------- |
-| 🌍 Interactive World Map | Explore a massive map divided into individual territories.     |
-| 🤖 AI Nations            | Compete against 20–50 autonomous AI-controlled nations.        |
-| ⚔️ Real-Time Combat      | Launch attacks, deploy troops, and conquer enemy territories.  |
-| 🪖 Military Management   | Generate, manage, and deploy your armies.                      |
-| 💰 Dynamic Economy       | Automatically generate gold and develop your nation's economy. |
-| 🏰 Infrastructure        | Construct cities, military bases, and defensive structures.    |
-| 🎯 Territorial Expansion | Capture neighboring territories and expand your empire.        |
-| 🏆 World Domination      | Eliminate rival nations and achieve total territorial control. |
+The following features define the planned gameplay experience:
+
+| Feature | Description |
+|:--|:--|
+| 🌍 Interactive World Map | Explore a world divided into individual territories. |
+| 🤖 AI Nations | Compete against 20–50 AI-controlled nations. |
+| ⚔️ Real-Time Combat | Launch attacks and conquer enemy territories. |
+| 🪖 Military Management | Generate, manage, and deploy your armies. |
+| 💰 Dynamic Economy | Generate gold and develop your nation's economy. |
+| 🏰 Infrastructure | Construct cities, military bases, and defensive structures. |
+| 🎯 Territorial Expansion | Capture neighboring territories and expand your empire. |
+| 🏆 World Domination | Defeat rival nations and pursue total territorial control. |
 
 ## 🎮 Gameplay
 
 ### 🌐 1. Explore the World
-
-Enter an interactive world map featuring numerous territories, neutral lands, and competing AI nations.
+Discover an interactive map featuring neutral territories, rival nations, and opportunities for expansion.
 
 ### 🪖 2. Build Your Military
-
-Generate troops automatically and manage your available military strength. Choose how many troops to deploy for each attack.
+Generate troops over time, manage your military strength, and decide how many soldiers to deploy in each attack.
 
 ### 💰 3. Develop Your Economy
-
-Generate gold over time and invest in cities, military infrastructure, and defensive buildings.
+Generate gold and invest in cities, military infrastructure, and defensive buildings.
 
 ### ⚔️ 4. Conquer Territories
-
 Select neighboring enemy territories, launch attacks, defeat opposing armies, and expand your nation's borders.
 
 ### 🤖 5. Challenge AI Nations
-
 Face up to 50 AI opponents with different difficulty levels, expansion strategies, and military behaviors.
 
 ### 👑 6. Achieve Global Domination
-
-Eliminate competing nations, control the map, and become the ultimate world power.
+Defeat competing nations, control the map, and become the ultimate world power.
 
 ## 🧠 AI Opponents
 
-The battlefield is populated by independent AI nations that compete for territorial control.
+The world is designed to be populated by independent AI nations competing for territorial control.
 
-**Difficulty Levels**
+**Planned difficulty levels:**
 
-- 🟢 Easy — Conservative expansion and basic military decisions.
-- 🟡 Normal — Balanced economy, expansion, and warfare.
-- 🔴 Hard — Aggressive expansion, strategic attacks, and stronger defense.
+- 🟢 **Easy:** Conservative expansion and basic military decisions.
+- 🟡 **Normal:** Balanced economy, expansion, and warfare.
+- 🔴 **Hard:** Aggressive expansion, strategic attacks, and stronger defenses.
 
-AI nations continuously evaluate neighboring territories, military strength, economic opportunities, and potential threats.
+AI opponents are intended to evaluate neighboring territories, military strength, economic opportunities, and potential threats.
 
 ## 🏗️ Technology Stack
 
-The project is designed around a modern web-based architecture.
+Global Conquest is being developed as a modern web application.
 
-| Technology   | Purpose                          |
-| :----------- | :------------------------------- |
-| React        | User interface                   |
-| TypeScript   | Application and simulation logic |
-| Vite         | Development and build tooling    |
-| Tailwind CSS | Interface styling                |
-| HTML5 Canvas | World map rendering              |
-| Web Workers  | Background calculations          |
-| IndexedDB    | Local game persistence           |
+| Technology | Purpose |
+|:--|:--|
+| Angular | Frontend framework |
+| TypeScript | Application and game logic |
+| HTML5 | Application structure |
+| CSS | Interface styling and animations |
+| HTML5 Canvas | Planned world map rendering |
+| Web Workers | Potential background simulation processing |
+| IndexedDB | Planned local game persistence |
 
 ## 🗺️ Development Roadmap
 
+The roadmap tracks the project's planned development. Features should only be marked complete when they are implemented and working.
+
+### Core Development
 - [ ] Interactive world map and territory rendering
 - [ ] Territory ownership and nation spawning
 - [ ] AI nations (20–50 opponents)
@@ -103,33 +100,42 @@ The project is designed around a modern web-based architecture.
 - [ ] Click-to-attack combat system
 - [ ] Territory expansion mechanics
 - [ ] AI attack and defense behavior
+
+### Gameplay Systems
 - [ ] Economic buildings and military infrastructure
 - [ ] Defensive structures
 - [ ] Victory and defeat conditions
 - [ ] Game speed and pause controls
 - [ ] Gameplay animations and sound effects
-- [ ] Performance optimization
+- [ ] Save and load system
+
+### Performance & Polish
+- [ ] Simulation performance optimization
+- [ ] Responsive interface
+- [ ] Improved AI decision-making
+- [ ] Gameplay balancing
 
 ### 🔮 Future Possibilities
-
 - [ ] Online multiplayer battles
 - [ ] Team-based warfare
 - [ ] Diplomacy and alliances
 - [ ] Naval warfare
-- [ ] Nuclear warfare
+- [ ] Advanced military systems
 - [ ] Custom maps and game modes
 - [ ] Ranked matchmaking
 - [ ] Global leaderboards
 
 ## 🚀 Getting Started
 
+Want to run Global Conquest locally? Follow these steps.
+
 ### Prerequisites
 
 Make sure you have installed:
 
-- Node.js (LTS recommended)
+- [Node.js](https://nodejs.org/) (LTS recommended)
 - npm
-- Git
+- [Git](https://git-scm.com/)
 
 ### Installation
 
@@ -154,20 +160,26 @@ npm install
 **4. Start the development server**
 
 ```bash
-npm run dev
+npm start
 ```
 
-**5. Open the local development URL**
+If the project does not have a `start` script, try:
+
+```bash
+npx ng serve
+```
+
+**5. Open the application**
+
+Visit the local URL displayed in your terminal. The default Angular development address is:
 
 ```text
-http://localhost:5173
+http://localhost:4200
 ```
-
-*Note: These instructions assume the standard Vite development setup.*
 
 ## 🎨 Project Philosophy
 
-Global Conquest is built around three fundamental principles:
+Global Conquest is built around three principles:
 
 - **Strategy over randomness:** Every battle and territorial decision should have meaningful consequences.
 - **Intelligence over automation:** AI nations should make strategic decisions rather than simply perform random actions.
@@ -188,28 +200,26 @@ The goal is to create a strategy game that is easy to understand but challenging
 
 ### 🌍 Inspiration
 
-Inspired by **[OpenFront](https://openfront.io/)** and its real-time territorial conquest gameplay.
+Inspired by [OpenFront](https://openfront.io/) and its real-time territorial conquest gameplay.
 
 Special appreciation to the OpenFront project and its contributors for inspiring the exploration of browser-based strategy gaming.
 
-This is an independent project and is not affiliated with or endorsed by OpenFront.
+**Disclaimer:** Global Conquest is an independent project. It is not affiliated with, endorsed by, or officially connected to OpenFront.
 
 ### 🛠️ Built With
 
-React · TypeScript · Vite · Tailwind CSS · HTML5 Canvas
+Angular · TypeScript · HTML5 · CSS
 
 ---
 
 ## 📜 License
 
-License information will be added when the project license is finalized.
+License information will be added when the project's license is finalized.
 
 ---
 
-\<p align="center">
-&#x20; \<b>🌍 One World. Countless Nations. One Conqueror.\</b>
-&#x20; \<br/>\<br/>
-&#x20; \<i>Built with strategy. Driven by ambition.\</i>
-&#x20; \<br/>\<br/>
-&#x20; ⭐ If you find this project interesting, consider giving it a star!
-\</p>
+### 🌍 One World. Countless Nations. One Conqueror.
+
+*Built with strategy. Driven by ambition.*
+
+⭐ If you find this project interesting, consider giving it a star!
