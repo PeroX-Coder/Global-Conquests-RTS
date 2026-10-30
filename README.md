@@ -176,8 +176,6 @@ Visit the local URL displayed in your terminal. The default Angular development 
 ```text
 http://localhost:4200
 ```
-## Or,
-### Play in web- 
 
 ## 🎨 Project Philosophy
 
