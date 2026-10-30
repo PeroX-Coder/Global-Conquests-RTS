@@ -110,7 +110,7 @@ The roadmap tracks the project's planned development. Features should only be ma
 - [ ] Save and load system
 
 ### Performance & Polish
-- [ ] Simulation performance optimization
+- [x] Simulation performance optimization
 - [ ] Responsive interface
 - [ ] Improved AI decision-making
 - [ ] Gameplay balancing
