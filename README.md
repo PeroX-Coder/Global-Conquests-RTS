@@ -205,7 +205,7 @@ The goal is to create a strategy game that is easy to understand but challenging
 
 ### 👑 Project Creator
 
-**Reko Re**
+**PeroX-Coder**
 
 - Original project concept and direction.
 - Product vision and gameplay planning.
