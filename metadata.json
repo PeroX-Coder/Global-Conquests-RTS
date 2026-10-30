@@ -1,0 +1,8 @@
+{
+  "name": "Global Conquest: Real-Time Territorial Strategy",
+  "description": "Command your nation, expand borders, deploy armies, construct military and economic infrastructure, and achieve territorial domination against dozens of AI empires in real time.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,826 @@
+<div class="relative w-screen h-screen overflow-hidden bg-slate-950 font-sans select-none">
+  <!-- Interactive 2D World Map Canvas -->
+  <div class="absolute inset-0 z-0">
+    <canvas #mapCanvas class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+  </div>
+
+  <!-- TITLE SCREEN OVERLAY -->
+  @if (matchStatus() === 'setup') {
+    <div class="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/90 p-4 overflow-y-auto">
+      <div class="max-w-2xl w-full bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 text-slate-100 my-auto">
+        <!-- SVG Emblem & Title Lockup -->
+        <div class="text-center mb-6">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 text-slate-950 shadow-lg shadow-emerald-500/20 mb-3">
+            <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" stroke-width="1.75"/>
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+              <path d="M2 12h20"/>
+            </svg>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-wider font-tactical uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-200 to-cyan-400">
+            Global Conquest
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-400 tracking-widest font-mono uppercase mt-1">
+            Real-Time Territorial Strategy Simulation
+          </p>
+        </div>
+
+        <!-- Configuration Form -->
+        <div class="space-y-5 bg-slate-950/60 border border-slate-800/80 rounded-xl p-5 mb-6">
+          <!-- AI Nations Slider -->
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <label for="aiCountRange" class="text-xs font-semibold uppercase text-slate-300 font-tactical tracking-wider">
+                Rival AI Nations
+              </label>
+              <span class="text-sm font-bold font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2.5 py-0.5 rounded-md">
+                {{ aiCount() }} Nations
+              </span>
+            </div>
+            <input
+              id="aiCountRange"
+              type="range"
+              min="20"
+              max="50"
+              step="1"
+              [value]="aiCount()"
+              (input)="onAiCountChange($event)"
+              class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+            />
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono mt-1">
+              <span>20 (Fast Pace)</span>
+              <span>30 (Standard)</span>
+              <span>50 (Global War)</span>
+            </div>
+          </div>
+
+          <!-- Difficulty -->
+          <div>
+            <div class="block text-xs font-semibold uppercase text-slate-300 font-tactical tracking-wider mb-2">
+              Strategic Difficulty
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                (click)="difficulty.set('easy')"
+                class="py-2 px-3 rounded-lg text-xs font-medium border transition-all text-center cursor-pointer"
+                [class.bg-emerald-900]="difficulty() === 'easy'"
+                [class.border-emerald-500]="difficulty() === 'easy'"
+                [class.text-emerald-200]="difficulty() === 'easy'"
+                [class.bg-slate-900]="difficulty() !== 'easy'"
+                [class.border-slate-800]="difficulty() !== 'easy'"
+                [class.text-slate-400]="difficulty() !== 'easy'"
+              >
+                EASY
+              </button>
+              <button
+                type="button"
+                (click)="difficulty.set('normal')"
+                class="py-2 px-3 rounded-lg text-xs font-medium border transition-all text-center cursor-pointer"
+                [class.bg-emerald-900]="difficulty() === 'normal'"
+                [class.border-emerald-500]="difficulty() === 'normal'"
+                [class.text-emerald-200]="difficulty() === 'normal'"
+                [class.bg-slate-900]="difficulty() !== 'normal'"
+                [class.border-slate-800]="difficulty() !== 'normal'"
+                [class.text-slate-400]="difficulty() !== 'normal'"
+              >
+                NORMAL
+              </button>
+              <button
+                type="button"
+                (click)="difficulty.set('hard')"
+                class="py-2 px-3 rounded-lg text-xs font-medium border transition-all text-center cursor-pointer"
+                [class.bg-emerald-900]="difficulty() === 'hard'"
+                [class.border-emerald-500]="difficulty() === 'hard'"
+                [class.text-emerald-200]="difficulty() === 'hard'"
+                [class.bg-slate-900]="difficulty() !== 'hard'"
+                [class.border-slate-800]="difficulty() !== 'hard'"
+                [class.text-slate-400]="difficulty() !== 'hard'"
+              >
+                HARD
+              </button>
+            </div>
+          </div>
+
+          <!-- Map Preset -->
+          <div>
+            <div class="block text-xs font-semibold uppercase text-slate-300 font-tactical tracking-wider mb-2">
+              Map Topology
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                (click)="mapPreset.set('world')"
+                class="py-2 px-3 rounded-lg text-xs font-medium border transition-all text-center cursor-pointer"
+                [class.bg-emerald-900]="mapPreset() === 'world'"
+                [class.border-emerald-500]="mapPreset() === 'world'"
+                [class.text-emerald-200]="mapPreset() === 'world'"
+                [class.bg-slate-900]="mapPreset() !== 'world'"
+                [class.border-slate-800]="mapPreset() !== 'world'"
+                [class.text-slate-400]="mapPreset() !== 'world'"
+              >
+                Continents
+              </button>
+              <button
+                type="button"
+                (click)="mapPreset.set('archipelago')"
+                class="py-2 px-3 rounded-lg text-xs font-medium border transition-all text-center cursor-pointer"
+                [class.bg-emerald-900]="mapPreset() === 'archipelago'"
+                [class.border-emerald-500]="mapPreset() === 'archipelago'"
+                [class.text-emerald-200]="mapPreset() === 'archipelago'"
+                [class.bg-slate-900]="mapPreset() !== 'archipelago'"
+                [class.border-slate-800]="mapPreset() !== 'archipelago'"
+                [class.text-slate-400]="mapPreset() !== 'archipelago'"
+              >
+                Archipelago
+              </button>
+              <button
+                type="button"
+                (click)="mapPreset.set('pangaea')"
+                class="py-2 px-3 rounded-lg text-xs font-medium border transition-all text-center cursor-pointer"
+                [class.bg-emerald-900]="mapPreset() === 'pangaea'"
+                [class.border-emerald-500]="mapPreset() === 'pangaea'"
+                [class.text-emerald-200]="mapPreset() === 'pangaea'"
+                [class.bg-slate-900]="mapPreset() !== 'pangaea'"
+                [class.border-slate-800]="mapPreset() !== 'pangaea'"
+                [class.text-slate-400]="mapPreset() !== 'pangaea'"
+              >
+                Pangaea
+              </button>
+            </div>
+          </div>
+
+          <!-- Starting Location Mode -->
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-xs font-semibold uppercase text-slate-300 font-tactical tracking-wider">
+              Starting Capital Selection
+            </span>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                (click)="randomStart.set(false)"
+                class="px-3 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer"
+                [class.bg-emerald-900]="!randomStart()"
+                [class.border-emerald-500]="!randomStart()"
+                [class.text-emerald-200]="!randomStart()"
+                [class.bg-slate-900]="randomStart()"
+                [class.border-slate-800]="randomStart()"
+                [class.text-slate-400]="randomStart()"
+              >
+                Manual (Pick on Map)
+              </button>
+              <button
+                type="button"
+                (click)="randomStart.set(true)"
+                class="px-3 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer"
+                [class.bg-emerald-900]="randomStart()"
+                [class.border-emerald-500]="randomStart()"
+                [class.text-emerald-200]="randomStart()"
+                [class.bg-slate-900]="!randomStart()"
+                [class.border-slate-800]="!randomStart()"
+                [class.text-slate-400]="!randomStart()"
+              >
+                Random
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Launch CTA -->
+        <button
+          type="button"
+          data-start="true"
+          (click)="startGame()"
+          class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-tactical font-bold text-lg tracking-wider uppercase shadow-lg shadow-emerald-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Launch Conquest</span>
+        </button>
+
+        <!-- Single Flat Controls Hint -->
+        <div class="text-center text-[11px] text-slate-400 font-mono mt-4">
+          Click / Drag Pan · Mousewheel Zoom · Click Adjacent to Attack · Esc Pause · M Mute
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- CAPITAL SELECTION BANNER -->
+  @if (matchStatus() === 'selecting_capital') {
+    <div class="absolute top-4 left-1/2 -translate-x-1/2 z-40 bg-slate-900/95 border-2 border-amber-500 text-slate-100 px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-4 animate-pulse">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-amber-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/></svg>
+        <div>
+          <div class="font-tactical font-bold text-sm tracking-wide text-amber-300">ESTABLISH YOUR STARTING CAPITAL</div>
+          <div class="text-xs text-slate-300">Click any neutral territory on the map to begin your conquest!</div>
+        </div>
+      </div>
+      <button
+        type="button"
+        (click)="autoPickCapital()"
+        class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold font-tactical tracking-wider uppercase cursor-pointer transition-all"
+      >
+        Auto Pick
+      </button>
+    </div>
+  }
+
+  <!-- IN-GAME HUD -->
+  @if (matchStatus() === 'playing' || matchStatus() === 'selecting_capital') {
+    <!-- TOP STATUS CLUSTER (Pointer-events none with auto on buttons) -->
+    <header class="absolute top-0 left-0 right-0 z-30 pointer-events-none p-3 sm:p-4 flex items-center justify-between">
+      <!-- Player Resource Cluster -->
+      <div class="pointer-events-auto flex items-center gap-3 bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-2 shadow-lg">
+        <!-- Nation Tag -->
+        <div class="flex items-center gap-2 pr-3 border-r border-slate-800">
+          <div class="w-3.5 h-3.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-400"></div>
+          <span class="font-tactical font-bold text-xs uppercase text-slate-200 hidden sm:inline">Player Front</span>
+        </div>
+
+        <!-- Gold -->
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-amber-400 fill-current" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5a2.5 2.5 0 0 0-5 0c0 3 5 2 5 5a2.5 2.5 0 0 1-5 0" stroke="#000" stroke-width="1.5" fill="none"/></svg>
+          <div>
+            <div class="font-mono font-bold text-sm text-amber-300 tabular-nums">
+              {{ Math.floor(playerNation()?.gold || 0).toLocaleString() }}
+            </div>
+            <div class="text-[10px] text-amber-400/80 font-mono">
+              +{{ (playerNation()?.goldGenerationRate || 0).toFixed(1) }}/s
+            </div>
+          </div>
+        </div>
+
+        <!-- Troops -->
+        <div class="flex items-center gap-2 pl-3 border-l border-slate-800">
+          <svg class="w-4 h-4 text-emerald-400 fill-current" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div>
+            <div class="font-mono font-bold text-sm text-emerald-300 tabular-nums">
+              {{ Math.floor(playerNation()?.totalTroops || 0).toLocaleString() }}
+            </div>
+            <div class="text-[10px] text-emerald-400/80 font-mono">
+              +{{ (playerNation()?.troopGenerationRate || 0).toFixed(1) }}/s
+            </div>
+          </div>
+        </div>
+
+        <!-- Territories Domination -->
+        <div class="hidden md:flex items-center gap-2 pl-3 border-l border-slate-800">
+          <svg class="w-4 h-4 text-cyan-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+          <div>
+            <div class="text-[11px] font-mono text-cyan-300">
+              <span class="font-bold">{{ playerNation()?.ownedTerritoryIds?.length || 0 }}</span> / {{ totalTerritoriesCount() }}
+              <span class="text-slate-400">({{ stats().playerTerritoryPercentage }}%)</span>
+            </div>
+            <div class="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden mt-0.5">
+              <div
+                class="h-full bg-gradient-to-r from-teal-500 to-cyan-400 transition-all duration-300"
+                [style.width.%]="stats().playerTerritoryPercentage"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Right Controls Cluster -->
+      <div class="pointer-events-auto flex items-center gap-2 bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-1.5 shadow-lg">
+        <!-- Game Clock -->
+        <div class="font-mono text-xs font-bold text-slate-300 px-2 py-1 bg-slate-950 rounded-md border border-slate-800">
+          {{ formatTime(gameTime()) }}
+        </div>
+
+        <!-- Speed Controls -->
+        <div class="flex items-center gap-1 bg-slate-950 p-0.5 rounded-lg border border-slate-800">
+          <button
+            type="button"
+            (click)="setSpeed(1)"
+            class="px-2 py-0.5 text-xs font-mono rounded cursor-pointer transition-colors"
+            [class.bg-emerald-600]="gameSpeed() === 1"
+            [class.text-white]="gameSpeed() === 1"
+            [class.text-slate-400]="gameSpeed() !== 1"
+          >
+            1x
+          </button>
+          <button
+            type="button"
+            (click)="setSpeed(2)"
+            class="px-2 py-0.5 text-xs font-mono rounded cursor-pointer transition-colors"
+            [class.bg-emerald-600]="gameSpeed() === 2"
+            [class.text-white]="gameSpeed() === 2"
+            [class.text-slate-400]="gameSpeed() !== 2"
+          >
+            2x
+          </button>
+          <button
+            type="button"
+            (click)="setSpeed(4)"
+            class="px-2 py-0.5 text-xs font-mono rounded cursor-pointer transition-colors"
+            [class.bg-emerald-600]="gameSpeed() === 4"
+            [class.text-white]="gameSpeed() === 4"
+            [class.text-slate-400]="gameSpeed() !== 4"
+          >
+            4x
+          </button>
+        </div>
+
+        <!-- Reset Camera -->
+        <button
+          type="button"
+          (click)="resetCamera()"
+          title="Reset Camera (C)"
+          class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer flex items-center justify-center transition-colors"
+        >
+          <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+        </button>
+
+        <!-- Mute Toggle -->
+        <button
+          type="button"
+          (click)="toggleMute()"
+          title="Toggle Sound (M)"
+          class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer flex items-center justify-center transition-colors"
+        >
+          @if (isMuted()) {
+            <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+          } @else {
+            <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          }
+        </button>
+
+        <!-- Pause Button -->
+        <button
+          type="button"
+          (click)="togglePause()"
+          title="Pause (Esc / P)"
+          class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer flex items-center justify-center transition-colors"
+        >
+          @if (isPaused()) {
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          } @else {
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+          }
+        </button>
+
+        <!-- Drawer Toggles -->
+        <button
+          type="button"
+          (click)="toggleLeftDrawer()"
+          title="Military Intel"
+          class="p-1.5 rounded-lg text-slate-300 cursor-pointer flex items-center justify-center transition-colors"
+          [class.bg-emerald-600]="showLeftDrawer()"
+          [class.bg-slate-800]="!showLeftDrawer()"
+        >
+          <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </button>
+
+        <button
+          type="button"
+          (click)="toggleRightDrawer()"
+          title="World Leaderboard"
+          class="p-1.5 rounded-lg text-slate-300 cursor-pointer flex items-center justify-center transition-colors"
+          [class.bg-emerald-600]="showRightDrawer()"
+          [class.bg-slate-800]="!showRightDrawer()"
+        >
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="6" width="4" height="15"/><rect x="17" y="2" width="4" height="19"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- LEFT DRAWER: TACTICAL MILITARY INTEL -->
+    @if (showLeftDrawer()) {
+      <aside class="absolute top-16 left-4 z-30 w-72 bg-slate-900/95 border border-slate-800 rounded-2xl shadow-2xl p-4 text-slate-200">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span class="font-tactical font-bold text-sm tracking-wide uppercase">Command Briefing</span>
+          </div>
+          <button (click)="showLeftDrawer.set(false)" class="text-slate-400 hover:text-white cursor-pointer">
+            <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <div class="space-y-3 mt-3 text-xs">
+          <div class="flex justify-between py-1 border-b border-slate-800/60 font-mono">
+            <span class="text-slate-400">Total Troops Generated:</span>
+            <span class="font-bold text-emerald-400">{{ stats().totalTroopsGenerated.toLocaleString() }}</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-800/60 font-mono">
+            <span class="text-slate-400">Troops Lost in Combat:</span>
+            <span class="font-bold text-rose-400">{{ stats().totalTroopsLost.toLocaleString() }}</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-800/60 font-mono">
+            <span class="text-slate-400">Battles Won:</span>
+            <span class="font-bold text-amber-400">{{ playerNation()?.battlesWon || 0 }}</span>
+          </div>
+          <div class="flex justify-between py-1 border-b border-slate-800/60 font-mono">
+            <span class="text-slate-400">Battles Repelled:</span>
+            <span class="font-bold text-slate-300">{{ playerNation()?.battlesLost || 0 }}</span>
+          </div>
+          <div class="flex justify-between py-1 font-mono">
+            <span class="text-slate-400">Territories Conquered:</span>
+            <span class="font-bold text-cyan-400">{{ playerNation()?.territoriesConquered || 0 }}</span>
+          </div>
+        </div>
+      </aside>
+    }
+
+    <!-- RIGHT DRAWER: WORLD LEADERBOARD & BATTLE FEED -->
+    @if (showRightDrawer()) {
+      <aside class="absolute top-16 right-4 z-30 w-80 bg-slate-900/95 border border-slate-800 rounded-2xl shadow-2xl p-4 text-slate-200 max-h-[calc(100vh-140px)] flex flex-col">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span class="font-tactical font-bold text-sm tracking-wide uppercase">World Standings</span>
+          </div>
+          <button (click)="showRightDrawer.set(false)" class="text-slate-400 hover:text-white cursor-pointer">
+            <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <!-- Leaderboard List -->
+        <div class="overflow-y-auto flex-1 pr-1 space-y-1.5 my-3">
+          @for (nation of rankedNations().slice(0, 10); track nation.id; let idx = $index) {
+            <div
+              class="flex items-center justify-between px-2.5 py-1.5 rounded-lg border text-xs"
+              [class.bg-emerald-950]="nation.isPlayer"
+              [class.border-emerald-700]="nation.isPlayer"
+              [class.bg-slate-950]="!nation.isPlayer"
+              [class.border-slate-800]="!nation.isPlayer"
+            >
+              <div class="flex items-center gap-2 overflow-hidden">
+                <span class="font-mono text-slate-400 w-4 font-bold">{{ idx + 1 }}.</span>
+                <div class="w-2.5 h-2.5 rounded-full shrink-0" [style.background-color]="nation.color"></div>
+                <span class="font-medium truncate" [class.text-emerald-300]="nation.isPlayer">
+                  {{ nation.name }} {{ nation.isPlayer ? '(You)' : '' }}
+                </span>
+              </div>
+              <div class="flex items-center gap-3 font-mono shrink-0">
+                <span class="text-cyan-400">{{ nation.ownedTerritoryIds.length }} terr</span>
+                <span class="text-slate-400">{{ Math.round(nation.totalTroops).toLocaleString() }}</span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Live Battle Feed -->
+        <div class="border-t border-slate-800 pt-2">
+          <div class="text-[11px] font-tactical font-bold uppercase text-slate-400 mb-1.5 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-rose-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span>Recent Operations</span>
+          </div>
+          <div class="space-y-1 max-h-28 overflow-y-auto pr-1 text-[11px] font-mono">
+            @for (feed of battleFeed(); track feed.id) {
+              <div
+                class="px-2 py-1 rounded bg-slate-950 border text-slate-300"
+                [class.border-emerald-800]="feed.isPlayerInvolved && feed.attackerWon"
+                [class.border-rose-800]="feed.isPlayerInvolved && !feed.attackerWon"
+                [class.border-slate-800]="!feed.isPlayerInvolved"
+              >
+                <span class="font-bold text-slate-200">{{ feed.territoryName }}:</span>
+                {{ feed.attackerWon ? 'Conquered' : 'Defended' }}
+                <span class="text-slate-400">({{ feed.attackingTroops }} troops)</span>
+              </div>
+            }
+          </div>
+        </div>
+      </aside>
+    }
+
+    <!-- BOTTOM COMMAND DOCK -->
+    <footer class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 w-full max-w-4xl px-4 pointer-events-none">
+      <div class="pointer-events-auto bg-slate-900/95 border border-slate-800 rounded-2xl shadow-2xl p-4 text-slate-100">
+        @if (selectedTerritory(); as terr) {
+          <!-- TERRITORY SELECTED VIEW -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Left Info: Territory Profile -->
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center border font-bold text-lg"
+                [class.bg-emerald-950]="terr.ownerId === engine.playerNationId"
+                [class.border-emerald-500]="terr.ownerId === engine.playerNationId"
+                [class.text-emerald-300]="terr.ownerId === engine.playerNationId"
+                [class.bg-slate-950]="terr.ownerId !== engine.playerNationId"
+                [class.border-slate-700]="terr.ownerId !== engine.playerNationId"
+                [class.text-slate-300]="terr.ownerId !== engine.playerNationId"
+              >
+                @if (terr.isCapital) {
+                  <svg class="w-5 h-5 fill-current text-amber-400" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                } @else {
+                  <svg class="w-5 h-5 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/></svg>
+                }
+              </div>
+
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="font-tactical font-bold text-base tracking-wide text-white">
+                    {{ terr.name }}
+                  </h2>
+                  <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">
+                    {{ terr.region }}
+                  </span>
+                </div>
+
+                <div class="flex items-center gap-3 text-xs font-mono text-slate-300 mt-0.5">
+                  <span>Garrison: <strong class="text-emerald-400">{{ Math.round(terr.troopCount).toLocaleString() }}</strong></span>
+                  <span>Terrain: <strong class="text-cyan-400">{{ terr.terrainType }} (x{{ terr.defenseMultiplier }})</strong></span>
+                  <span>Econ: <strong class="text-amber-400">+{{ terr.economicValue }}</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Actions: Attack Deploy or Building Construction -->
+            @if (terr.ownerId === engine.playerNationId) {
+              <!-- Attack & Build Controls for Player Territory -->
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 border-t md:border-t-0 md:border-l border-slate-800 pt-3 md:pt-0 md:pl-4">
+                <!-- Deployment Percentage Preset Pills & Slider -->
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex items-center justify-between text-[11px] font-mono text-slate-300">
+                    <span>Attack Force:</span>
+                    <span class="font-bold text-amber-400">{{ deployPercentage() }}%</span>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <button
+                      type="button"
+                      (click)="setDeployPercentage(25)"
+                      class="px-2 py-1 rounded text-xs font-mono border cursor-pointer transition-colors"
+                      [class.bg-amber-600]="deployPercentage() === 25"
+                      [class.border-amber-500]="deployPercentage() === 25"
+                      [class.text-white]="deployPercentage() === 25"
+                      [class.bg-slate-800]="deployPercentage() !== 25"
+                      [class.border-slate-700]="deployPercentage() !== 25"
+                    >25%</button>
+                    <button
+                      type="button"
+                      (click)="setDeployPercentage(50)"
+                      class="px-2 py-1 rounded text-xs font-mono border cursor-pointer transition-colors"
+                      [class.bg-amber-600]="deployPercentage() === 50"
+                      [class.border-amber-500]="deployPercentage() === 50"
+                      [class.text-white]="deployPercentage() === 50"
+                      [class.bg-slate-800]="deployPercentage() !== 50"
+                      [class.border-slate-700]="deployPercentage() !== 50"
+                    >50%</button>
+                    <button
+                      type="button"
+                      (click)="setDeployPercentage(75)"
+                      class="px-2 py-1 rounded text-xs font-mono border cursor-pointer transition-colors"
+                      [class.bg-amber-600]="deployPercentage() === 75"
+                      [class.border-amber-500]="deployPercentage() === 75"
+                      [class.text-white]="deployPercentage() === 75"
+                      [class.bg-slate-800]="deployPercentage() !== 75"
+                      [class.border-slate-700]="deployPercentage() !== 75"
+                    >75%</button>
+                    <button
+                      type="button"
+                      (click)="setDeployPercentage(100)"
+                      class="px-2 py-1 rounded text-xs font-mono border cursor-pointer transition-colors"
+                      [class.bg-amber-600]="deployPercentage() === 100"
+                      [class.border-amber-500]="deployPercentage() === 100"
+                      [class.text-white]="deployPercentage() === 100"
+                      [class.bg-slate-800]="deployPercentage() !== 100"
+                      [class.border-slate-700]="deployPercentage() !== 100"
+                    >100%</button>
+                  </div>
+                </div>
+
+                <!-- Building Construction Buttons -->
+                <div class="flex items-center gap-1.5 border-t sm:border-t-0 sm:border-l border-slate-800 pt-2 sm:pt-0 sm:pl-3">
+                  <!-- Build City -->
+                  <button
+                    type="button"
+                    (click)="buildStructure('city')"
+                    [disabled]="(playerNation()?.gold || 0) < buildingCosts.city.cost"
+                    title="City (+15 G/s, +6 Troops/s) - Cost: 1,500 Gold"
+                    class="px-2.5 py-1.5 rounded-lg border text-xs font-tactical flex items-center gap-1 cursor-pointer transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200"
+                  >
+                    <svg class="w-3.5 h-3.5 text-cyan-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M3 21h18M6 21V7l8-4v18M14 11h4v10M9 9h1M9 13h1M9 17h1M14 15h1M14 18h1"/></svg>
+                    <span>City (1.5k)</span>
+                  </button>
+
+                  <!-- Build Defense Post -->
+                  <button
+                    type="button"
+                    (click)="buildStructure('defense_post')"
+                    [disabled]="(playerNation()?.gold || 0) < buildingCosts.defense_post.cost"
+                    title="Defense Post (+50% Defense) - Cost: 1,200 Gold"
+                    class="px-2.5 py-1.5 rounded-lg border text-xs font-tactical flex items-center gap-1 cursor-pointer transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200"
+                  >
+                    <svg class="w-3.5 h-3.5 text-amber-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>Post (1.2k)</span>
+                  </button>
+
+                  <!-- Build Military Base -->
+                  <button
+                    type="button"
+                    (click)="buildStructure('military_base')"
+                    [disabled]="(playerNation()?.gold || 0) < buildingCosts.military_base.cost"
+                    title="Military Base (+20 Troops/s) - Cost: 2,000 Gold"
+                    class="px-2.5 py-1.5 rounded-lg border text-xs font-tactical flex items-center gap-1 cursor-pointer transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-200"
+                  >
+                    <svg class="w-3.5 h-3.5 text-rose-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M4 21V5l3 2 3-2 3 2 3-2 4 2v16H4zm4-10h8v10H8V11z"/></svg>
+                    <span>Base (2.0k)</span>
+                  </button>
+                </div>
+              </div>
+            } @else {
+              <!-- Intel on Enemy/Neutral territory -->
+              <div class="flex items-center gap-3 border-t md:border-t-0 md:border-l border-slate-800 pt-3 md:pt-0 md:pl-4">
+                <div class="text-xs text-slate-400 font-mono">
+                  Owner: <span class="font-bold text-white">{{ terr.ownerId ? 'AI Sovereign' : 'Neutral Territory' }}</span>
+                </div>
+                <div class="text-xs text-amber-400 font-mono flex items-center gap-1">
+                  <svg class="w-4 h-4 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+                  <span>Select an adjacent green territory to launch an attack</span>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Highlighted Adjacent Attack Targets Shortcut Bar -->
+          @if (terr.ownerId === engine.playerNationId && adjacentTargets().length > 0) {
+            <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center gap-2 overflow-x-auto text-xs">
+              <span class="text-slate-400 font-tactical uppercase tracking-wider text-[11px] shrink-0">Adjacent Targets:</span>
+              @for (target of adjacentTargets(); track target.id) {
+                <button
+                  type="button"
+                  (click)="selectTarget(target.id)"
+                  class="px-2.5 py-1 rounded bg-slate-800 hover:bg-amber-900 border border-amber-600/50 hover:border-amber-400 text-amber-300 font-mono text-xs flex items-center gap-1.5 cursor-pointer transition-colors shrink-0"
+                >
+                  <svg class="w-3 h-3 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+                  <span>{{ target.name }}</span>
+                  <span class="text-slate-400">({{ Math.round(target.troopCount) }})</span>
+                </button>
+              }
+            </div>
+          }
+        } @else {
+          <!-- NO TERRITORY SELECTED HINT -->
+          <div class="flex items-center justify-between text-xs text-slate-400 font-mono">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.93V18a1 1 0 0 1-2 0v-1.07A7 7 0 0 1 5.07 11H6a1 1 0 0 1 0-2h-.93A7 7 0 0 1 11 5.07V6a1 1 0 0 1 2 0v-.93A7 7 0 0 1 18.93 11H18a1 1 0 0 1 0 2h.93A7 7 0 0 1 13 16.93z"/></svg>
+              <span>Click any owned territory to inspect, manage defenses, or deploy armies to adjacent enemies.</span>
+            </div>
+            <div class="hidden sm:inline-block text-[11px] text-slate-500">
+              Drag to pan · Scroll to zoom
+            </div>
+          </div>
+        }
+      </div>
+    </footer>
+  }
+
+  <!-- PAUSE MODAL -->
+  @if (isPaused() && matchStatus() === 'playing') {
+    <div class="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4">
+      <div class="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 text-slate-100 text-center">
+        <svg class="w-12 h-12 text-cyan-400 stroke-current fill-none mx-auto mb-2" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="10" y1="15" x2="10" y2="9"/><line x1="14" y1="15" x2="14" y2="9"/></svg>
+        <h2 class="text-2xl font-tactical font-bold uppercase tracking-wider mb-1">Conquest Suspended</h2>
+        <p class="text-xs text-slate-400 font-mono mb-6">Simulation and armies are currently frozen in time</p>
+
+        <div class="grid grid-cols-2 gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800/80 mb-6 text-xs font-mono">
+          <div>
+            <div class="text-slate-400">Territories:</div>
+            <div class="font-bold text-emerald-400 text-base">{{ stats().playerTerritoryPercentage }}%</div>
+          </div>
+          <div>
+            <div class="text-slate-400">Match Elapsed:</div>
+            <div class="font-bold text-white text-base">{{ formatTime(gameTime()) }}</div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <button
+            type="button"
+            (click)="togglePause()"
+            class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-tactical font-bold text-sm tracking-wider uppercase cursor-pointer transition-colors"
+          >
+            Resume Conquest
+          </button>
+          <button
+            type="button"
+            (click)="restartMatch()"
+            class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-tactical text-xs tracking-wider uppercase cursor-pointer transition-colors"
+          >
+            Restart Match
+          </button>
+          <button
+            type="button"
+            (click)="returnToMenu()"
+            class="w-full py-2 rounded-xl text-slate-400 hover:text-white font-mono text-xs cursor-pointer transition-colors"
+          >
+            Return to Main Menu
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- VICTORY MODAL -->
+  @if (matchStatus() === 'victory') {
+    <div class="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/90 p-4">
+      <div class="max-w-lg w-full bg-slate-900 border-2 border-emerald-500 rounded-2xl shadow-2xl p-6 sm:p-8 text-slate-100 text-center">
+        <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 mx-auto flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2M6 3h12v7a6 6 0 0 1-12 0V3zM9 21h6M12 16v5"/></svg>
+        </div>
+
+        <h2 class="text-3xl font-tactical font-extrabold uppercase tracking-wider text-emerald-400 mb-1">
+          Global Domination
+        </h2>
+        <p class="text-xs text-slate-400 font-mono uppercase tracking-widest mb-6">
+          Every continent and nation has submitted to your banner
+        </p>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6 text-xs font-mono text-left">
+          <div>
+            <span class="text-slate-400">Match Duration:</span>
+            <div class="font-bold text-white text-base">{{ formatTime(gameTime()) }}</div>
+          </div>
+          <div>
+            <span class="text-slate-400">Territories Conquered:</span>
+            <div class="font-bold text-cyan-400 text-base">{{ totalTerritoriesCount() }} / {{ totalTerritoriesCount() }} (100%)</div>
+          </div>
+          <div>
+            <span class="text-slate-400">Battles Won:</span>
+            <div class="font-bold text-amber-400 text-base">{{ stats().totalBattles }}</div>
+          </div>
+          <div>
+            <span class="text-slate-400">Total Troops Trained:</span>
+            <div class="font-bold text-emerald-400 text-base">{{ stats().totalTroopsGenerated.toLocaleString() }}</div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <button
+            type="button"
+            data-start="true"
+            (click)="restartMatch()"
+            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-tactical font-bold text-base tracking-wider uppercase cursor-pointer transition-all shadow-lg shadow-emerald-500/20"
+          >
+            Play Again
+          </button>
+          <button
+            type="button"
+            (click)="returnToMenu()"
+            class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-tactical text-xs tracking-wider uppercase cursor-pointer transition-colors"
+          >
+            Main Menu
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- DEFEAT MODAL -->
+  @if (matchStatus() === 'defeat') {
+    <div class="absolute inset-0 z-50 flex items-center justify-center bg-slate-950/90 p-4">
+      <div class="max-w-md w-full bg-slate-900 border-2 border-rose-500 rounded-2xl shadow-2xl p-6 sm:p-8 text-slate-100 text-center">
+        <div class="w-16 h-16 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/40 mx-auto flex items-center justify-center mb-4">
+          <svg class="w-8 h-8 stroke-current fill-none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl font-tactical font-extrabold uppercase tracking-wider text-rose-400 mb-1">
+          Territorial Collapse
+        </h2>
+        <p class="text-xs text-slate-400 font-mono uppercase tracking-widest mb-6">
+          Your garrisons have fallen and your capital has been annexed
+        </p>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 gap-3 bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6 text-xs font-mono text-left">
+          <div>
+            <span class="text-slate-400">Time Survived:</span>
+            <div class="font-bold text-white text-base">{{ formatTime(gameTime()) }}</div>
+          </div>
+          <div>
+            <span class="text-slate-400">Total Battles:</span>
+            <div class="font-bold text-amber-400 text-base">{{ stats().totalBattles }}</div>
+          </div>
+          <div>
+            <span class="text-slate-400">Casualties Suffered:</span>
+            <div class="font-bold text-rose-400 text-base">{{ stats().totalTroopsLost.toLocaleString() }}</div>
+          </div>
+          <div>
+            <span class="text-slate-400">Peak Expansion:</span>
+            <div class="font-bold text-cyan-400 text-base">{{ playerNation()?.territoriesConquered || 0 }} terr</div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <button
+            type="button"
+            data-start="true"
+            (click)="restartMatch()"
+            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-400 hover:to-amber-400 text-slate-950 font-tactical font-bold text-base tracking-wider uppercase cursor-pointer transition-all shadow-lg shadow-rose-500/20"
+          >
+            Try Again
+          </button>
+          <button
+            type="button"
+            (click)="returnToMenu()"
+            class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-tactical text-xs tracking-wider uppercase cursor-pointer transition-colors"
+          >
+            Main Menu
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
